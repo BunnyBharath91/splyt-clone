@@ -64,6 +64,43 @@ const FlavorSlider = () => {
         },
         "<",
       );
+
+    const cards = document.querySelectorAll(".flavors > div");
+
+    cards.forEach((card) => {
+      card.addEventListener("mousemove", (e) => {
+        const bounds = card.getBoundingClientRect();
+        const x = e.clientX - bounds.left;
+        const y = e.clientY - bounds.top;
+
+        const offsetX = (x / bounds.width - 0.5) * 30; // max 30px left/right
+        const offsetY = (y / bounds.height - 0.5) * 30; // max 30px up/down
+
+        const elements = card.querySelector(".elements");
+        const drinks = card.querySelector(".drinks");
+
+        if (elements)
+          gsap.to(elements, {
+            x: offsetX,
+            y: offsetY,
+            duration: 0.3,
+            ease: "power2.out",
+          });
+
+        if (drinks)
+          gsap.to(drinks, { x: -offsetX, duration: 0.3, ease: "power2.out" });
+      });
+
+      card.addEventListener("mouseleave", () => {
+        const elements = card.querySelector(".elements");
+        const drinks = card.querySelector(".drinks");
+
+        if (elements)
+          gsap.to(elements, { x: 0, y: 0, duration: 0.5, ease: "power3.out" });
+        if (drinks)
+          gsap.to(drinks, { x: 0, y: 0, duration: 0.5, ease: "power3.out" });
+      });
+    });
   });
 
   return (
